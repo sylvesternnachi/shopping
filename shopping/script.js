@@ -1,6 +1,9 @@
 const itemForm = document.getElementById('item-form');
 const itemInput = document.querySelector('.form-input');
 const itemList = document.getElementById('item-list');
+const clearBtn = document.getElementById('clear');
+const filter = document.getElementById('filter');
+const emptyMessage = document.getElementById('empty-message');
 
 
 
@@ -8,9 +11,10 @@ const itemList = document.getElementById('item-list');
 function addItem(e){
     e.preventDefault();
 
-    if(itemInput.value === '') {
+
+    if(itemInput.value === ' ') {
         alert('Enter Input Field')
-    }else{
+    }  else{
 
     //Create Li and Li Class
     const li = document.createElement('li');
@@ -33,9 +37,12 @@ function addItem(e){
     //Append Li to Ul
     itemList.appendChild(li);
     
+        //check UI for update
+        checkUI();
+        
     itemInput.value = ' ';
 
-};
+    };
 
  };
 
@@ -44,12 +51,57 @@ function addItem(e){
  function removeItem(e){
    const target = e.target;
    if(target.classList.value === 'fa-solid fa-xmark'){
-    target.parentElement.parentElement.remove();
-   }
+
+    if(confirm('Are you sure you want to remoce this item?')){
+            //Remove single item
+          target.parentElement.parentElement.remove();
+
+     //Check UI
+        checkUI();
+
+    };
+  
+   };
 
  };
+
+
+
+ function clearAll(e){
+    if(confirm('Are you sure you want to clear all todo item?')){
+        itemList.innerHTML = ``;
+
+         //Check UI
+        checkUI();
+    };
+    
+ };
+
+
+
+ function checkUI(){
+    const item = itemList.querySelectorAll('li');
+            console.log(item)
+    if(item.length === 0){
+        filter.style.display = 'none';
+        clearBtn.style.display = 'none';
+        emptyMessage.style.display = 'block';
+         
+    }else{
+        filter.style.display = 'block';
+        clearBtn.style.display = 'block';
+         emptyMessage.style.display = 'none';
+    }
+ }
+
+
+
 
 //Event Listerners
 itemForm.addEventListener('submit', addItem);
 
 itemList.addEventListener('click', removeItem);
+
+clearBtn.addEventListener('click', clearAll);
+
+checkUI()

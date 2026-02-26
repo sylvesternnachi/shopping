@@ -119,6 +119,11 @@ header h1 {
   font-weight: 700;
 }
 
+#empty-message{
+  padding: 10%;
+  display: none;
+}
+
 @media (max-width: 500px) {
   .items li {
     width: 100%;
