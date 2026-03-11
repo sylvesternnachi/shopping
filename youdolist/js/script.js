@@ -8,7 +8,11 @@ const priorityList = document.querySelectorAll('.priority-btn');
 const filterItem = document.querySelector('.filter-item');
 const filterInput = document.getElementById('filter-items')
 
+
 let selectedPriority = null;
+let itemId = null;
+let itemName = null;
+let isEditMode = false;
 
 const highItemList = document.getElementById('high-items-list');
 const mediumItemList = document.getElementById('medium-items-list');
@@ -430,9 +434,115 @@ function removeItem(e){
 
 
 
+};
+
+//...........Edit Content //...................
+
+function editItem(e){
+
+     const itemFromStorage = getItemFromLs();
+
+    if(e.target.classList.contains('item')){
+        // console.log(e.target.innerText);
+        textInput.value = e.target.innerText;
+        priorityShow.style.display = 'flex';
+
+        isEditMode = true;
+
+         itemFromStorage.forEach(itemList => {
+       
+        if(itemList.item === e.target.innerText ){
+
+         selectedPriority = itemList.priority;
+         itemId = itemList.id
+       
+        priorityList.forEach(selectList => {
+
+                     selectList.classList.remove('high','medium','low');
+
+                     if(selectedPriority === 'High' && selectList.classList.contains('1')){
+                        selectList.classList.add('high');
+                    }
+
+                    if(selectedPriority === 'Medium' && selectList.classList.contains('2')){
+                        selectList.classList.add('medium');
+                    }
+
+                    if(selectedPriority === 'Low' && selectList.classList.contains('3')){
+                        selectList.classList.add('low');
+                    }
+
+           
+            //Add this to the global variable
+            selectedPriority = itemList.priority;
+            
+
+         });
+
+
+         }
+
+
+        });
+
+    };
+
+    
 }
 
 //------------------------------------------------------------------
+
+function updateEdit(){
+
+    // Get updated values from the input & priority selection
+    let newText = textInput.value;
+    const newPriority = selectedPriority;
+    
+    if(newText.trimStart().length > 0 ) {
+        
+     let itemFromStorage = getItemFromLs();
+
+    itemFromStorage.forEach(itemList => {
+        if(itemList.id === Number(itemId)){
+           itemList.item = newText;        // <-- use input value
+            itemList.priority = newPriority; // <-- use selectedPriority
+        }
+    });
+    
+     localStorage.setItem('lsitems', JSON.stringify(itemFromStorage));
+
+
+        // setting back the edit mode to false;
+      isEditMode = false;
+
+    // Reset input field if you want
+    textInput.value = '';
+    selectedPriority = null;
+    itemId = null;
+
+ // Clear existing li from the displaty to lists
+   clearOldLists()
+
+    // Re-display items
+    displayItem();
+    checkUI();
+
+    } else{
+        alert('Enter a valid input');
+    }
+
+
+}
+
+//------ CLear list After Update or it show the new editted item ---
+
+function clearOldLists() {
+    highItemList.querySelectorAll('li').forEach(li => li.remove());
+    mediumItemList.querySelectorAll('li').forEach(li => li.remove());
+    lowItemList.querySelectorAll('li').forEach(li => li.remove());
+}
+
+//
 
 //RemoveItem from LocalStorage 
 
@@ -468,10 +578,18 @@ function tickAsDone(e){
 //Initialize App
 function init(){
 //Event Listener
-form.addEventListener('submit', addItem);
+form.addEventListener('submit', function (e) { 
+    e.preventDefault();
+    if(isEditMode){
+        updateEdit();
+    }else{
+        addItem(e);
+    }
+});
 mainBody.addEventListener('click', removeItem);
+mainBody.addEventListener('click', editItem);
 mainBody.addEventListener('change', tickAsDone );
-mainBody.addEventListener('change', tickAsDone );
+// mainBody.addEventListener('change', tickAsDone );
 filterInput.addEventListener('input', filterItemFunc);
 addEventListener('DOMContentLoaded', displayItem);
 
