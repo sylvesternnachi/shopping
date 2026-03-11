@@ -124,6 +124,13 @@ header h1 {
   display: none;
 }
 
+
+#empty-filter{
+  padding: 10%;
+  display: none;
+  width: 100%;
+}
+
 @media (max-width: 500px) {
   .items li {
     width: 100%;
