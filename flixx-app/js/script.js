@@ -269,7 +269,7 @@ async function tvShowDetails(){
           </div>
         </div>
     
-    `
+    `;
 
     showDetailPage.appendChild(div)
 
