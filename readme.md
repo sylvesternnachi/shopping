@@ -1,2 +1,2 @@
-# shopping list
-Simple shopping list app from Javascript Modern Course.
+# Javascript learning
+Learning Javascript and implement the examples also using Traversy Media
