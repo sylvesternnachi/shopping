@@ -294,7 +294,7 @@ function checkUI(){
      const lowList = lowItemList.querySelectorAll('li');
 
      // Join all the UI so I can use them for checkbox
-  const allLis = [...checkHighList, ...mediumList, ...lowList];
+  const allLis = mainBody.querySelectorAll('li');
 
 
      //GlobalCheck to add empty State
@@ -376,7 +376,7 @@ function checkUI(){
             });
 
 
-            allcheckbox = allLis.forEach(li => { 
+            allLis.forEach(li => { 
 
             liIds = li.getAttribute('data-id');
 
@@ -466,7 +466,8 @@ function filterItemFunc(e){
         }
 
 
-   
+    //Reset UI / Update UI after filter is no longer in use.
+    checkUI();
 
 }
 
@@ -510,14 +511,8 @@ function editItem(e){
      const itemFromStorage = getItemFromLs();
 
      //-------- THE PURPOSE FOR THIS CODE IS TO FADE THE LI COLOR THAT IS BEEN EDITTED ---
-
-     //Getting all the Lis for both High, Medium & Low
-    const checkHighList = highItemList.querySelectorAll('li');
-     const mediumList = mediumItemList.querySelectorAll('li');
-     const lowList = lowItemList.querySelectorAll('li');
-
-     // Join all the UI so I can use them for checkbox
-    const allLis = [...checkHighList, ...mediumList, ...lowList];
+     // Get all the Lis from MainBody
+    const allLis = mainBody.querySelectorAll('li');
     //--------------------------------------------------------------------------------------
 
 
